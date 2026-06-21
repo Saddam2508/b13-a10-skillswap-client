@@ -17,11 +17,11 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: {
-        default: "seeker",
+        default: "freelancer",
       },
-      plan: {
-        default: "seeker_free",
-      },
+      // plan: {
+      //   default: "seeker_free",
+      // },
     },
   },
   plugins: [admin()],
