@@ -22,7 +22,7 @@ export default function SignupForm({ redirectTo = "/" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("seeker");
+  const [role, setRole] = useState("client");
 
   // UI States
   const [isVisible, setIsVisible] = useState(false);
@@ -182,7 +182,7 @@ export default function SignupForm({ redirectTo = "/" }) {
 
           {/* Role */}
           <div className="flex flex-col gap-4">
-            <Label>Subscription plan</Label>
+            {/* <Label>Subscription plan</Label> */}
 
             <RadioGroup
               name="role"
@@ -190,23 +190,23 @@ export default function SignupForm({ redirectTo = "/" }) {
               onChange={setRole}
               orientation="horizontal"
             >
-              <Radio value="seeker">
+              <Radio value="client">
                 <Radio.Control>
                   <Radio.Indicator />
                 </Radio.Control>
 
                 <Radio.Content>
-                  <Label>Job Seeker</Label>
+                  <Label>Client</Label>
                 </Radio.Content>
               </Radio>
 
-              <Radio value="recruiter">
+              <Radio value="freelancer">
                 <Radio.Control>
                   <Radio.Indicator />
                 </Radio.Control>
 
                 <Radio.Content>
-                  <Label>Recruiter</Label>
+                  <Label>Freelancer</Label>
                 </Radio.Content>
               </Radio>
             </RadioGroup>
