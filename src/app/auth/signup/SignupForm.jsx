@@ -57,17 +57,14 @@ export default function SignupForm({ redirectTo = "/" }) {
 
     setIsLoading(true);
 
-    const plan = role === "seeker" ? "seeker_free" : "recruiter_free";
-
     try {
-      const { error: authError } = await signUp.email({
+      const { result, error: authError } = await signUp.email({
         email,
         password,
         name,
         role,
-        plan,
       });
-
+      console.log(result);
       if (authError) {
         setError(authError.message || "Something went wrong during signup.");
         return;

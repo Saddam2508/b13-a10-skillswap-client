@@ -9,14 +9,14 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
 
-  // const user = session?.user;
-  const user = true;
+  const user = session?.user;
 
   const handleSignOut = async () => {
     await signOut();
   };
 
   const navLinks = [
+    { label: "Home", href: "/" },
     {
       label: "Browse Tasks",
       href: "/tasks",
@@ -28,15 +28,15 @@ export default function Navbar() {
   ];
 
   const dashboardLinks = {
-    seeker: "/dashboard/seeker",
-    recruiter: "/dashboard/recruiter",
+    client: "/dashboard/client",
+    freelancer: "/dashboard/freelancer",
     admin: "/dashboard/admin",
   };
 
   if (user?.email) {
     navLinks.push({
       label: "Dashboard",
-      href: dashboardLinks[user?.role || "seeker"],
+      href: dashboardLinks[user?.role || "client"],
     });
   }
 
@@ -61,7 +61,7 @@ export default function Navbar() {
             {/* Nav Links */}
             <ul className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-2">
               {navLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
@@ -85,22 +85,21 @@ export default function Navbar() {
                   </Button>
                 </>
               ) : (
-                <Link
-                  href="/auth/signin"
-                  className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
-                >
-                  Sign In
-                </Link>
+                <>
+                  <Link
+                    href="/auth/signin"
+                    className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    className="flex h-11 items-center rounded-xl bg-white px-6 text-sm font-semibold text-black hover:bg-gray-200 transition"
+                  >
+                    Get Started
+                  </Link>
+                </>
               )}
-
-              <Button
-                as={Link}
-                href="/register"
-                radius="lg"
-                className="h-11 bg-white px-6 text-sm font-semibold text-black hover:bg-gray-200"
-              >
-                Get Started
-              </Button>
             </div>
           </div>
 
