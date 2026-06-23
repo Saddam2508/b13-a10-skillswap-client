@@ -19,53 +19,61 @@ import Link from "next/link";
 export async function DashboardSidebar() {
   const user = await getUserSession();
 
-  const recruiterNavLinks = [
-    { icon: House, href: "/dashboard/recruiter", label: "Home" },
-    { icon: Magnifier, href: "/dashboard/recruiter/jobs", label: "Jobs" },
-    { icon: Bell, href: "/dashboard/recruiter/jobs/new", label: "Post A Job" },
-    {
-      icon: Briefcase,
-      href: "/dashboard/recruiter/company",
-      label: "Company Profile",
-    },
-    { icon: Envelope, href: "/messages", label: "Messages" },
+  const clientNavLinks = [
+    { icon: House, href: "/dashboard/client", label: "Dashboard" },
+    { icon: Bell, href: "/dashboard/client/post-task", label: "Post a Task" },
+    { icon: Briefcase, href: "/dashboard/client/my-tasks", label: "My Tasks" },
+    { icon: FileText, href: "/dashboard/client/proposals", label: "Proposals" },
     { icon: Person, href: "/profile", label: "Profile" },
-    { icon: Gear, href: "/settings", label: "Settings" },
   ];
 
-  const seekerNavLinks = [
-    { icon: House, href: "/dashboard/seeker", label: "Dashboard" },
-    { icon: Magnifier, href: "/dashboard/seeker/jobs", label: "Jobs" },
+  const freelancerNavLinks = [
+    { icon: House, href: "/dashboard/freelancer", label: "Dashboard" },
     {
-      icon: Bookmark,
-      href: "/dashboard/seeker/saved-jobs",
-      label: "Saved Jobs",
+      icon: Magnifier,
+      href: "/dashboard/freelancer/browse-tasks",
+      label: "Browse Tasks",
     },
     {
       icon: FileText,
-      href: "/dashboard/seeker/applications",
-      label: "Applications",
+      href: "/dashboard/freelancer/my-proposals",
+      label: "My Proposals",
     },
-    { icon: CreditCard, href: "/dashboard/seeker/billing", label: "Billing" },
-    { icon: Gear, href: "/settings", label: "Settings" },
+    {
+      icon: Briefcase,
+      href: "/dashboard/freelancer/active-projects",
+      label: "Active Projects",
+    },
+    {
+      icon: CreditCard,
+      href: "/dashboard/freelancer/earnings",
+      label: "Earnings",
+    },
+    {
+      icon: Person,
+      href: "/dashboard/freelancer/profile",
+      label: "Edit Profile",
+    },
   ];
 
   const adminNavLinks = [
     { icon: House, href: "/dashboard/admin", label: "Dashboard" },
-    { icon: Users, href: "/dashboard/admin/users", label: "Users" },
-    { icon: Building, href: "/dashboard/admin/companies", label: "Companies" },
-    { icon: Briefcase, href: "/dashboard/admin/jobs", label: "Jobs" },
-    { icon: CreditCard, href: "/dashboard/admin/payments", label: "Payments" },
-    { icon: Gear, href: "/dashboard/admin/settings", label: "Settings" },
+    { icon: Users, href: "/dashboard/admin/users", label: "Manage Users" },
+    { icon: Briefcase, href: "/dashboard/admin/tasks", label: "Manage Tasks" },
+    {
+      icon: CreditCard,
+      href: "/dashboard/admin/transactions",
+      label: "Transactions",
+    },
   ];
 
   const navLinksMap = {
-    seeker: seekerNavLinks,
-    recruiter: recruiterNavLinks,
+    client: clientNavLinks,
+    freelancer: freelancerNavLinks,
     admin: adminNavLinks,
   };
 
-  const navItems = navLinksMap[user?.role || "seeker"];
+  const navItems = navLinksMap[user?.role || "client"];
 
   const navContent = (
     <nav className="flex flex-col gap-1">

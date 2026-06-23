@@ -12,12 +12,12 @@ export default function Footer() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-500">
-                <span className="text-xl font-bold text-white">P</span>
+                <span className="text-xl font-bold text-white">S</span>
               </div>
 
               <div className="leading-none">
-                <h2 className="text-xl font-bold">Hiring</h2>
-                <h2 className="text-xl font-bold">Loop</h2>
+                <h2 className="text-xl font-bold">Skill</h2>
+                <h2 className="text-xl font-bold">Swap</h2>
               </div>
             </Link>
 
