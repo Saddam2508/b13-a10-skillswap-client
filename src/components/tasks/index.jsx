@@ -1,113 +1,160 @@
-// components/home/LatestTasks.jsx
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
+import { Pagination } from "@heroui/react";
 import TaskCard from "@/components/card/TaskCard";
+import TasksFilters from "./TasksFilter";
 
-export default function LatestTasks() {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function TasksContainer({ tasks, filters = {}, total }) {
+  const [searchQuery, setSearchQuery] = useState(filters.search || "");
+  const [selectedCategory, setSelectedCategory] = useState(
+    filters.category || "all",
+  );
+  const [page, setPage] = useState(filters.page || 1);
+
+  const router = useRouter();
+
+  const itemsPerPage = 9;
+  const totalPages = Math.ceil(total / itemsPerPage);
+  const startItem = (page - 1) * itemsPerPage + 1;
+  const endItem = Math.min(page * itemsPerPage, total);
+
+  const getPageNumbers = () => {
+    const pages = [];
+    pages.push(1);
+    if (page > 3) pages.push("ellipsis");
+    const start = Math.max(2, page - 1);
+    const end = Math.min(totalPages - 1, page + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (page < totalPages - 2) pages.push("ellipsis");
+    if (totalPages > 1) pages.push(totalPages);
+    return pages;
+  };
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/tasks?status=open&limit=6`,
-        );
-        const data = await res.json();
-        setTasks(data.tasks || []);
-      } catch (err) {
-        console.error("Failed to fetch tasks:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const sp = new URLSearchParams();
+    if (searchQuery) sp.set("search", searchQuery);
+    if (selectedCategory !== "all") sp.set("category", selectedCategory);
+    if (page > 1) sp.set("page", page);
+    router.push(`?${sp.toString()}`);
+  }, [router, searchQuery, selectedCategory, page]);
 
-    fetchTasks();
-  }, []);
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+    setPage(1);
+  };
+
+  const handleCategoryChange = (key) => {
+    setSelectedCategory(key);
+    setPage(1);
+  };
+
+  if (!tasks) return <p> No data found</p>;
 
   return (
-    <section className="bg-[#0B0B0F] px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
-        >
-          <div>
-            <p className="mb-2 text-sm font-medium uppercase tracking-widest text-violet-400">
-              Latest Opportunities
-            </p>
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Featured Tasks
-            </h2>
-            <p className="mt-2 text-gray-400">
-              Fresh tasks posted by clients — ready for your proposal
-            </p>
-          </div>
-          <Link
-            href="/tasks"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/10"
-          >
-            View All Tasks
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </Link>
-        </motion.div>
+    <>
+      <TasksFilters
+        searchQuery={searchQuery}
+        setSearchQuery={handleSearchChange}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={handleCategoryChange}
+      />
 
-        {/* Loading Skeleton */}
-        {loading && (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="animate-pulse rounded-2xl border border-white/10 bg-white/5 p-6 h-52"
-              />
-            ))}
-          </div>
+      {/* Result count */}
+      <div className="max-w-7xl mx-auto mb-6 text-sm text-zinc-500">
+        Showing {tasks.length} task{tasks.length !== 1 && "s"}
+        {total > 0 && (
+          <span className="ml-1 text-zinc-600">
+            ({startItem}–{endItem} of {total})
+          </span>
         )}
+      </div>
 
-        {/* Tasks Grid */}
-        {!loading && tasks.length > 0 && (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {tasks && tasks.length > 0 ? (
+        <>
+          {/* Tasks Grid */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {tasks.map((task, index) => (
               <motion.div
                 key={task._id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
               >
                 <TaskCard task={task} />
               </motion.div>
             ))}
           </div>
-        )}
 
-        {/* Empty State */}
-        {!loading && tasks.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-white/10 py-20 text-center">
-            <p className="text-gray-500">No open tasks available right now.</p>
-          </div>
-        )}
-      </div>
-    </section>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <Pagination className="w-full max-w-7xl mx-auto mb-10">
+              <Pagination.Summary>
+                Showing {startItem}–{endItem} of {total} results
+              </Pagination.Summary>
+              <Pagination.Content>
+                <Pagination.Item>
+                  <Pagination.Previous
+                    isDisabled={page === 1}
+                    onPress={() => setPage((p) => p - 1)}
+                  >
+                    <Pagination.PreviousIcon />
+                    <span>Previous</span>
+                  </Pagination.Previous>
+                </Pagination.Item>
+
+                {getPageNumbers().map((p, i) =>
+                  p === "ellipsis" ? (
+                    <Pagination.Item key={`ellipsis-${i}`}>
+                      <Pagination.Ellipsis />
+                    </Pagination.Item>
+                  ) : (
+                    <Pagination.Item key={p}>
+                      <Pagination.Link
+                        isActive={p === page}
+                        onPress={() => setPage(p)}
+                      >
+                        {p}
+                      </Pagination.Link>
+                    </Pagination.Item>
+                  ),
+                )}
+
+                <Pagination.Item>
+                  <Pagination.Next
+                    isDisabled={page === totalPages}
+                    onPress={() => setPage((p) => p + 1)}
+                  >
+                    <span>Next</span>
+                    <Pagination.NextIcon />
+                  </Pagination.Next>
+                </Pagination.Item>
+              </Pagination.Content>
+            </Pagination>
+          )}
+        </>
+      ) : (
+        /* Empty State */
+        <div className="text-center py-20 border border-dashed border-zinc-800 rounded-[32px] max-w-7xl mx-auto">
+          <p className="text-zinc-500 text-lg">
+            No tasks match your search criteria.
+          </p>
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setSelectedCategory("all");
+              setPage(1);
+            }}
+            className="mt-4 text-sm text-violet-400 hover:text-violet-300 underline"
+          >
+            Clear filters
+          </button>
+        </div>
+      )}
+    </>
   );
 }

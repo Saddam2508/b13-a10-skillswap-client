@@ -21,8 +21,12 @@ export async function DashboardSidebar() {
 
   const clientNavLinks = [
     { icon: House, href: "/dashboard/client", label: "Dashboard" },
-    { icon: Bell, href: "/dashboard/client/post-task", label: "Post a Task" },
-    { icon: Briefcase, href: "/dashboard/client/my-tasks", label: "My Tasks" },
+    {
+      icon: Bell,
+      href: "/dashboard/client/tasks/post-tasks",
+      label: "Post a Task",
+    },
+    { icon: Briefcase, href: "/dashboard/client/tasks", label: "My Tasks" },
     { icon: FileText, href: "/dashboard/client/proposals", label: "Proposals" },
     { icon: Person, href: "/profile", label: "Profile" },
   ];

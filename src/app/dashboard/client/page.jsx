@@ -3,32 +3,42 @@ import React from "react";
 import { useSession } from "@/lib/auth-client";
 import {
   Briefcase,
-  Persons,
   Thunderbolt,
   CircleCheck,
+  CircleDollar,
 } from "@gravity-ui/icons";
 import { DashboardStats } from "@/components/dashbaord/DashboardStats";
-const ClientDashboardHomePage = () => {
+
+const ClientDashboardHomePage = ({ stats }) => {
   const { data: session, isPending } = useSession();
 
   if (isPending) {
     return <div>Loading...</div>;
   }
 
-  const recruiterStats = [
-    { title: "Total Job Posts", value: "48", icon: Briefcase },
-    { title: "Total Applicants", value: "1,284", icon: Persons },
-    { title: "Active Jobs", value: "18", icon: Thunderbolt },
-    { title: "Jobs Closed", value: "32", icon: CircleCheck },
-  ];
-
   const user = session?.user;
-  console.log("Session data in RecruiterDashboardHomePage:", session);
+
+  // if (!stats) return <p> No stats found</p>;
+
+  const clientStats = [
+    { title: "Total Tasks", value: stats?.totalTasks ?? 0, icon: Briefcase },
+    { title: "Open Tasks", value: stats?.openTasks ?? 0, icon: Thunderbolt },
+    {
+      title: "Tasks In Progress",
+      value: stats?.inProgressTasks ?? 0,
+      icon: CircleCheck,
+    },
+    {
+      title: "Total Spent (USD)",
+      value: `$${stats?.totalSpent ?? 0}`,
+      icon: CircleDollar,
+    },
+  ];
 
   return (
     <div>
       <h2 className="text-4xl">Welcome back, {user?.name}</h2>
-      <DashboardStats statsData={recruiterStats} />
+      <DashboardStats statsData={clientStats} />
     </div>
   );
 };
