@@ -6,12 +6,17 @@ const AllTaskPage = async ({ searchParams }) => {
   const filters = await searchParams;
   const querySearch = new URLSearchParams(filters);
   const queryString = querySearch.toString();
-  console.log(querySearch, queryString, filters);
-  const { tasks, total } = await getTasks(queryString);
-  console.log(tasks);
+  const result = await getTasks(queryString);
+  const tasks = result?.data || [];
+  const total = result?.total || 0;
   return (
     <div>
-      <LatestTasks filters={filters} tasks={tasks || []} total={total} />
+      <LatestTasks
+        filters={filters}
+        tasks={tasks}
+        total={total}
+        showFilters={true}
+      />
     </div>
   );
 };

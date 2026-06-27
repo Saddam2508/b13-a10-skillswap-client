@@ -15,7 +15,6 @@ export const authHeader = async () => {
 
 export const serverFetch = async (path) => {
   const res = await fetch(`${baseUrl}${path}`);
-  console.log(res);
   return handleStatusCode(res);
 };
 
@@ -43,12 +42,12 @@ export const serverMutation = async (path, data, method = "POST") => {
 };
 
 // handle 401, 404, 403
-const handleStatusCode = (res) => {
+const handleStatusCode = async (res) => {
   if (res.status === 401) {
     redirect("/unauthorized");
   } else if (res.status === 403) {
     redirect("/forbidden");
   }
-
-  return res.json();
+  const result = await res.json();
+  return result;
 };

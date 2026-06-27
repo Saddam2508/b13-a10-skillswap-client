@@ -8,7 +8,12 @@ import { Pagination } from "@heroui/react";
 import TaskCard from "@/components/card/TaskCard";
 import TasksFilters from "./TasksFilter";
 
-export default function TasksContainer({ tasks, filters = {}, total }) {
+export default function TasksContainer({
+  tasks,
+  filters = {},
+  total,
+  showFilters,
+}) {
   const [searchQuery, setSearchQuery] = useState(filters.search || "");
   const [selectedCategory, setSelectedCategory] = useState(
     filters.category || "all",
@@ -52,16 +57,19 @@ export default function TasksContainer({ tasks, filters = {}, total }) {
     setPage(1);
   };
 
-  if (!tasks) return <p> No data found</p>;
+  if (!tasks)
+    return <p className="max-w-7xl mx-auto text-center"> No data found</p>;
 
   return (
     <>
-      <TasksFilters
-        searchQuery={searchQuery}
-        setSearchQuery={handleSearchChange}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={handleCategoryChange}
-      />
+      {showFilters && (
+        <TasksFilters
+          searchQuery={searchQuery}
+          setSearchQuery={handleSearchChange}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={handleCategoryChange}
+        />
+      )}
 
       {/* Result count */}
       <div className="max-w-7xl mx-auto mb-6 text-sm text-zinc-500">
