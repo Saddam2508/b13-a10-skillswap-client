@@ -30,7 +30,7 @@ export default async function HomeLatestTasks() {
         ))}
       </div>
 
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-end mt-10">
         <Link
           href="/tasks"
           className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-all duration-300"
