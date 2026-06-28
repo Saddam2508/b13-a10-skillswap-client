@@ -1,13 +1,14 @@
+"use client";
+import { useState } from "react";
 import { updateTask } from "@/lib/actions/tasks";
 import {
   Button,
- 
-  Modal,
   Input,
+  Modal,
   Select,
-  TextArea,
+  SelectItem,
+  Textarea,
 } from "@heroui/react";
-
 
 const CATEGORIES = ["Design", "Writing", "Development", "Marketing", "Other"];
 
@@ -20,13 +21,15 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
     deadline: task?.deadline?.slice(0, 10) || "",
   });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const set = (key) => (e) =>
     setForm((p) => ({ ...p, [key]: e?.target ? e.target.value : e }));
 
   const handleSave = async () => {
+    setError("");
     if (!form.title.trim() || !form.budget || !form.deadline) {
-      addToast({ title: "Please fill all required fields.", color: "danger" });
+      setError("Please fill all required fields.");
       return;
     }
     setSaving(true);
@@ -36,111 +39,137 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
         budget: Number(form.budget),
       });
       if (result?.error) throw new Error(result.error);
-      addToast({ title: "Task updated!", color: "success" });
       onSave({ ...task, ...form, budget: Number(form.budget) });
     } catch (err) {
-      addToast({ title: err.message || "Update failed.", color: "danger" });
+      setError(err.message || "Update failed.");
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg">
-      <Modal.Content className="bg-zinc-900 border border-zinc-800 rounded-2xl">
-        <Modal.Header className="border-b border-zinc-800 pb-4">
-          <span className="text-white font-semibold">Edit Task</span>
-        </Modal.Header>
+    <Modal>
+      <Modal.Backdrop>
+        <Modal.Container placement="auto">
+          <Modal.Dialog className="sm:max-w-lg bg-zinc-900 border border-zinc-800 rounded-2xl">
+            <Modal.CloseTrigger onClick={onClose} />
 
-        <Modal.Body className="flex flex-col gap-4 py-5">
-          <Input
-            label="Title"
-            value={form.title}
-            onValueChange={(v) => setForm((p) => ({ ...p, title: v }))}
-            classNames={{
-              input: "bg-transparent text-white",
-              inputWrapper:
-                "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
-              label: "text-zinc-400 text-xs",
-            }}
-          />
+            <Modal.Header>
+              <Modal.Heading className="text-white font-semibold">
+                Edit Task
+              </Modal.Heading>
+              <p className="mt-1 text-sm text-zinc-400">
+                Update your task details below.
+              </p>
+            </Modal.Header>
 
-          <Select
-            label="Category"
-            selectedKeys={form.category ? [form.category] : []}
-            onSelectionChange={(keys) =>
-              setForm((p) => ({ ...p, category: [...keys][0] || "" }))
-            }
-            classNames={{
-              trigger:
-                "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
-              label: "text-zinc-400 text-xs",
-              value: "text-white",
-              popoverContent: "bg-zinc-800 border border-zinc-700 rounded-xl",
-            }}
-          >
-            {CATEGORIES.map((c) => (
-              <Select.Item key={c} className="text-zinc-200 hover:bg-violet-600/30">
-                {c}
-              </Select.Item>
-            ))}
-          </Select>
+            <Modal.Body className="px-6 py-4">
+              <div className="flex flex-col gap-4">
+                <Input
+                  label="Title"
+                  value={form.title}
+                  onValueChange={(v) => setForm((p) => ({ ...p, title: v }))}
+                  classNames={{
+                    input: "bg-transparent text-white",
+                    inputWrapper:
+                      "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
+                    label: "text-zinc-400 text-xs",
+                  }}
+                />
 
-          <TextArea
-            label="Description"
-            value={form.description}
-            onChange={set("description")}
-            minRows={3}
-            classNames={{
-              input: "bg-transparent text-white",
-              inputWrapper:
-                "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
-              label: "text-zinc-400 text-xs",
-            }}
-          />
+                <Select
+                  label="Category"
+                  selectedKeys={form.category ? [form.category] : []}
+                  onSelectionChange={(keys) =>
+                    setForm((p) => ({ ...p, category: [...keys][0] || "" }))
+                  }
+                  classNames={{
+                    trigger:
+                      "bg-zinc-800 border border-zinc-700 hover:border-violet-500 rounded-xl",
+                    label: "text-zinc-400 text-xs",
+                    value: "text-white",
+                    popoverContent:
+                      "bg-zinc-800 border border-zinc-700 rounded-xl",
+                  }}
+                >
+                  {CATEGORIES.map((c) => (
+                    <SelectItem key={c} className="text-zinc-200">
+                      {c}
+                    </SelectItem>
+                  ))}
+                </Select>
 
-          <div className="grid grid-cols-2 gap-3">
-            <Input
-              label="Budget (USD)"
-              type="number"
-              value={form.budget}
-              onChange={set("budget")}
-              startContent={<span className="text-zinc-500 text-sm">$</span>}
-              classNames={{
-                input: "bg-transparent text-white",
-                inputWrapper:
-                  "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
-                label: "text-zinc-400 text-xs",
-              }}
-            />
-            <Input
-              label="Deadline"
-              type="date"
-              value={form.deadline}
-              onChange={set("deadline")}
-              classNames={{
-                input: "bg-transparent text-white",
-                inputWrapper:
-                  "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
-                label: "text-zinc-400 text-xs",
-              }}
-            />
-          </div>
-        </Modal.Body>
+                <Textarea
+                  label="Description"
+                  value={form.description}
+                  onChange={set("description")}
+                  minRows={3}
+                  classNames={{
+                    input: "bg-transparent text-white",
+                    inputWrapper:
+                      "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
+                    label: "text-zinc-400 text-xs",
+                  }}
+                />
 
-        <Modal.Footer className="border-t border-zinc-800 pt-4 flex justify-end gap-2">
-          <Button variant="flat" onPress={onClose} className="text-zinc-400">
-            Cancel
-          </Button>
-          <Button
-            onPress={handleSave}
-            isLoading={saving}
-            className="bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-medium"
-          >
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal.Content>
+                <div className="grid grid-cols-2 gap-3">
+                  <Input
+                    label="Budget (USD)"
+                    type="number"
+                    value={form.budget}
+                    onChange={set("budget")}
+                    startContent={
+                      <span className="text-zinc-500 text-sm">$</span>
+                    }
+                    classNames={{
+                      input: "bg-transparent text-white",
+                      inputWrapper:
+                        "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
+                      label: "text-zinc-400 text-xs",
+                    }}
+                  />
+                  <Input
+                    label="Deadline"
+                    type="date"
+                    value={form.deadline}
+                    onChange={set("deadline")}
+                    classNames={{
+                      input: "bg-transparent text-white",
+                      inputWrapper:
+                        "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
+                      label: "text-zinc-400 text-xs",
+                    }}
+                  />
+                </div>
+
+                {error && (
+                  <p className="text-red-400 text-xs bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+                    {error}
+                  </p>
+                )}
+              </div>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button
+                slot="close"
+                variant="secondary"
+                onPress={onClose}
+                className="text-zinc-400"
+              >
+                Cancel
+              </Button>
+              <Button
+                onPress={handleSave}
+                isLoading={saving}
+                className="bg-violet-600 hover:bg-violet-500 text-white rounded-xl font-medium"
+              >
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal.Backdrop>
     </Modal>
   );
 }

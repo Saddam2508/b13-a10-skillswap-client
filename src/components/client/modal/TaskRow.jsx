@@ -63,7 +63,7 @@ export function TaskRow({ task, onEdit, onDelete }) {
         color={st.color}
         variant="flat"
         size="sm"
-        classNames={{ base: "shrink-0", content: "text-xs font-medium" }}
+        className={{ base: "shrink-0", content: "text-xs font-medium" }}
       >
         {st.label}
       </Chip>
