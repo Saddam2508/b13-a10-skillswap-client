@@ -1,5 +1,6 @@
 import TaskCard from "@/components/card/TaskCard";
 import { getTasks } from "@/lib/api/tasks";
+import Link from "next/link";
 
 export default async function HomeLatestTasks() {
   let tasks = [];
@@ -12,10 +13,21 @@ export default async function HomeLatestTasks() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {tasks.map((task) => (
-        <TaskCard key={task._id} task={task} />
-      ))}
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tasks.map((task) => (
+          <TaskCard key={task._id} task={task} />
+        ))}
+      </div>
+
+      <div className="flex justify-end mt-10">
+        <Link
+          href="/tasks"
+          className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium transition-all duration-300"
+        >
+          View All Tasks
+        </Link>
+      </div>
     </div>
   );
 }

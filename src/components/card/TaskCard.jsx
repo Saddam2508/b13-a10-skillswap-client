@@ -33,7 +33,7 @@ export default function TaskCard({ task }) {
           >
             {task.category}
           </span>
-          <span className="text-xs text-gray-500">Open</span>
+          <span className="text-xs text-gray-500">{task.status || "Open"}</span>
         </div>
 
         {/* Task Title */}

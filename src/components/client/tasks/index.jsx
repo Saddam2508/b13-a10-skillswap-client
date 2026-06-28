@@ -24,6 +24,7 @@ const categories = [
 export default function PostTaskForm() {
   const { data: session } = useSession();
   const router = useRouter();
+  const user = session?.user;
 
   const [formData, setFormData] = useState({
     title: "",
@@ -58,6 +59,7 @@ export default function PostTaskForm() {
         description: formData.description,
         budget: Number(formData.budget),
         deadline: formData.deadline,
+        client_name: user,
         client_email: session?.user?.email,
         status: "open",
       });
