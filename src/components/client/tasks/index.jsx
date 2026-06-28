@@ -59,7 +59,7 @@ export default function PostTaskForm() {
         description: formData.description,
         budget: Number(formData.budget),
         deadline: formData.deadline,
-        client_name: user,
+        client_name: user?.name,
         client_email: session?.user?.email,
         status: "open",
       });

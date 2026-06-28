@@ -8,6 +8,7 @@ const AllTaskPage = async ({ searchParams }) => {
   const queryString = querySearch.toString();
   const result = await getTasks(queryString);
   const tasks = result?.data || [];
+  console.log(tasks)
   const total = result?.total || 0;
   return (
     <div>
