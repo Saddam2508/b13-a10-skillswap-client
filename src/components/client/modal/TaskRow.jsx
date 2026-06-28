@@ -75,7 +75,7 @@ export function TaskRow({ task, onEdit, onDelete }) {
           size="sm"
           variant="flat"
           isDisabled={!canEdit}
-          onPress={() => canEdit && onEdit(task)}
+          onPress={() => canEdit && onEdit(task)  }
           title={canEdit ? "Edit task" : "Only open tasks can be edited"}
           className={
             canEdit

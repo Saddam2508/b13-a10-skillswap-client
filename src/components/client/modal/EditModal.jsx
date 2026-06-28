@@ -6,13 +6,17 @@ import {
   Input,
   Modal,
   Select,
-  SelectItem,
-  Textarea,
+  TextArea,
+  Label,
+  ListBox
 } from "@heroui/react";
 
 const CATEGORIES = ["Design", "Writing", "Development", "Marketing", "Other"];
 
 export function EditModal({ task, isOpen, onClose, onSave }) {
+
+
+  
   const [form, setForm] = useState({
     title: task?.title || "",
     category: task?.category || "",
@@ -25,6 +29,8 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
 
   const set = (key) => (e) =>
     setForm((p) => ({ ...p, [key]: e?.target ? e.target.value : e }));
+
+  if (!isOpen) return null;
 
   const handleSave = async () => {
     setError("");
@@ -48,7 +54,7 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
   };
 
   return (
-    <Modal>
+    <Modal isOpen={isOpen}>
       <Modal.Backdrop>
         <Modal.Container placement="auto">
           <Modal.Dialog className="sm:max-w-lg bg-zinc-900 border border-zinc-800 rounded-2xl">
@@ -68,8 +74,8 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
                 <Input
                   label="Title"
                   value={form.title}
-                  onValueChange={(v) => setForm((p) => ({ ...p, title: v }))}
-                  classNames={{
+                  onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
+                  className={{
                     input: "bg-transparent text-white",
                     inputWrapper:
                       "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",
@@ -78,33 +84,39 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
                 />
 
                 <Select
-                  label="Category"
-                  selectedKeys={form.category ? [form.category] : []}
-                  onSelectionChange={(keys) =>
-                    setForm((p) => ({ ...p, category: [...keys][0] || "" }))
-                  }
-                  classNames={{
-                    trigger:
-                      "bg-zinc-800 border border-zinc-700 hover:border-violet-500 rounded-xl",
-                    label: "text-zinc-400 text-xs",
-                    value: "text-white",
-                    popoverContent:
-                      "bg-zinc-800 border border-zinc-700 rounded-xl",
-                  }}
-                >
-                  {CATEGORIES.map((c) => (
-                    <SelectItem key={c} className="text-zinc-200">
-                      {c}
-                    </SelectItem>
-                  ))}
-                </Select>
+  selectedKeys={form.category ? [form.category] : []}
+  onSelectionChange={(keys) =>
+    setForm((p) => ({
+      ...p,
+      category: Array.from(keys)[0] || "",
+    }))
+  }
+>
+  <Label>Category</Label>
 
-                <Textarea
+  <Select.Trigger className="bg-zinc-800 border border-zinc-700 rounded-xl">
+    <Select.Value />
+    <Select.Indicator />
+  </Select.Trigger>
+
+  <Select.Popover>
+    <ListBox>
+      {CATEGORIES.map((c) => (
+        <ListBox.Item key={c} id={c} textValue={c}>
+          {c}
+          <ListBox.ItemIndicator />
+        </ListBox.Item>
+      ))}
+    </ListBox>
+  </Select.Popover>
+</Select>
+
+                <TextArea
                   label="Description"
                   value={form.description}
                   onChange={set("description")}
                   minRows={3}
-                  classNames={{
+                  className={{
                     input: "bg-transparent text-white",
                     inputWrapper:
                       "bg-zinc-800 border border-zinc-700 hover:border-violet-500 data-[focus=true]:border-violet-500 rounded-xl",

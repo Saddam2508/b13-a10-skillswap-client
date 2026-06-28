@@ -3,7 +3,7 @@ import { Button, Modal } from "@heroui/react";
 
 export function DeleteModal({ task, isOpen, onClose, onConfirm, deleting }) {
   return (
-    <Modal>
+    <Modal isOpen = {isOpen}>
       <Modal.Backdrop>
         <Modal.Container placement="auto">
           <Modal.Dialog className="sm:max-w-sm bg-zinc-900 border border-zinc-800 rounded-2xl text-center">
