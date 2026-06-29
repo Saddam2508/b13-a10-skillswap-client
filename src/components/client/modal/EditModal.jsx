@@ -115,7 +115,7 @@ export function EditModal({ task, isOpen, onClose, onSave }) {
                   label="Description"
                   value={form.description}
                   onChange={set("description")}
-                  minRows={3}
+                  rows={3}
                   className={{
                     input: "bg-transparent text-white",
                     inputWrapper:

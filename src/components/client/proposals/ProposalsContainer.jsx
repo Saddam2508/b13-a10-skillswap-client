@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { acceptProposal, rejectProposal } from "@/lib/api/proposals";
+import { acceptProposal, rejectProposal } from "@/lib/actions/proposals";
+
 
 export default function ProposalsContainer({ proposals }) {
   const [loading, setLoading] = useState(null);

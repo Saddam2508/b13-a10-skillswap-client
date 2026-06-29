@@ -1,8 +1,8 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import ProposalsContainer from "@/components/dashboard/ProposalsContainer";
 import { redirect } from "next/navigation";
 import { getProposalsByClientEmail } from "@/lib/api/proposals";
+import ProposalsContainer from "@/components/client/proposals/ProposalsContainer";
 
 export default async function ProposalsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
