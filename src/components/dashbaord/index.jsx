@@ -28,7 +28,7 @@ export async function DashboardSidebar() {
     },
     { icon: Briefcase, href: "/dashboard/client/tasks", label: "My Tasks" },
     { icon: FileText, href: "/dashboard/client/proposals", label: "Proposals" },
-    { icon: Person, href: "/profile", label: "Profile" },
+    { icon: Person, href: "/dashboard/client/profile", label: "Profile" },
   ];
 
   const freelancerNavLinks = [
@@ -40,12 +40,12 @@ export async function DashboardSidebar() {
     },
     {
       icon: FileText,
-      href: "/dashboard/freelancer/my-proposals",
+      href: "/dashboard/freelancer/proposals",
       label: "My Proposals",
     },
     {
       icon: Briefcase,
-      href: "/dashboard/freelancer/active-projects",
+      href: "/dashboard/freelancer/projects",
       label: "Active Projects",
     },
     {

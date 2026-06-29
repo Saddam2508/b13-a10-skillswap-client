@@ -14,3 +14,8 @@ export const getMyTasks = async (email) => {
   return serverFetch(`/api/tasks/my-tasks?email=${email}`);
 };
  
+export const getActiveTasks = (email) =>
+  serverFetch(`/api/tasks/active?freelancerEmail=${encodeURIComponent(email)}`);
+ 
+export const getCompletedTasks = (email) =>
+  serverFetch(`/api/tasks/completed?freelancerEmail=${encodeURIComponent(email)}`);

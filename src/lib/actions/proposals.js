@@ -9,3 +9,11 @@ export const acceptProposal = async (id) => {
 export const rejectProposal = async (id) => {
   return serverMutation(`/api/proposals/${id}/reject`, {}, "PATCH");
 };
+ 
+export const submitProposal = async (data) =>
+  serverMutation("/api/proposals", data);
+ 
+export const updateProposalStatus = async (id, status) =>
+  serverMutation(`/api/proposals/${id}/status`, { status }, "PATCH");
+ 
+ 

@@ -16,3 +16,9 @@ export const deleteTask = async (id) => {
 export const updateTaskStatus = async (taskId, status) => {
   return serverMutation(`/api/tasks/${taskId}/status`, { status }, "PATCH");
 };
+
+export const submitDeliverable = async (id, deliverableUrl) =>
+ {return serverMutation(`/api/tasks/${id}/deliverable`, { deliverableUrl }, "PATCH");}
+ 
+// export const updateUserProfile = async (data) =>
+// { return serverMutation("/api/users/profile", data, "PUT");}
