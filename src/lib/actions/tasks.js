@@ -13,12 +13,10 @@ export const deleteTask = async (id) => {
   return serverMutation(`/api/tasks/${id}`, {}, "DELETE");
 };
 
-export const updateTaskStatus = async (taskId, status) => {
-  return serverMutation(`/api/tasks/${taskId}/status`, { status }, "PATCH");
+export const updateTaskStatus = async (taskId, proposalId, status) => {
+  return serverMutation(`/api/tasks/${taskId}/status`, { status, proposalId }, "PATCH");
 };
 
 export const submitDeliverable = async (id, deliverableUrl) =>
  {return serverMutation(`/api/tasks/${id}/deliverable`, { deliverableUrl }, "PATCH");}
  
-// export const updateUserProfile = async (data) =>
-// { return serverMutation("/api/users/profile", data, "PUT");}

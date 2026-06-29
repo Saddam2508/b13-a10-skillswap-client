@@ -2,6 +2,6 @@
 
 import { updateTaskStatus } from "./tasks";
 
-export const completePaymentAction = async (taskId) => {
-  return updateTaskStatus(taskId, "in_progress");
+export const completePaymentAction = async (taskId, proposalId) => {
+  return updateTaskStatus(taskId, proposalId, "in_progress");
 };

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { acceptProposal, rejectProposal } from "@/lib/actions/proposals";
+import { rejectProposal } from "@/lib/actions/proposals";
 
 
 export default function ProposalsContainer({ proposals }) {
@@ -14,7 +14,6 @@ export default function ProposalsContainer({ proposals }) {
     setError("");
     setLoading(proposal._id);
     try {
-      await acceptProposal(proposal._id);
       router.push(
         `/payment/checkout?proposalId=${proposal._id}&amount=${proposal.proposedBudget}&taskId=${proposal.task._id}`,
       );

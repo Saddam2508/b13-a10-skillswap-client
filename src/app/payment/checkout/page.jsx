@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { completePaymentAction } from "@/lib/actions/paymentActions";
+import { acceptProposal } from "@/lib/actions/proposals";
 
 export default function CheckoutPage() {
   const searchParams = useSearchParams();
@@ -25,7 +26,8 @@ export default function CheckoutPage() {
     await new Promise((res) => setTimeout(res, 2000));
 
     try {
-      await completePaymentAction(taskId);
+      await acceptProposal(proposalId);
+      await completePaymentAction(taskId, proposalId);
       setSuccess(true);
       setTimeout(() => router.push("/dashboard/client"), 2000);
     } catch (err) {
