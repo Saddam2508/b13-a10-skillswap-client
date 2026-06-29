@@ -16,7 +16,7 @@ export default function ProposalsContainer({ proposals }) {
     try {
       await acceptProposal(proposal._id);
       router.push(
-        `/payment/checkout?proposalId=${proposal._id}&amount=${proposal.proposed_budget}&taskId=${proposal.task_id}`,
+        `/payment/checkout?proposalId=${proposal._id}&amount=${proposal.proposedBudget}&taskId=${proposal.task._id}`,
       );
     } catch (err) {
       setError(err.message || "Already accepted a proposal for this task");
@@ -75,7 +75,7 @@ export default function ProposalsContainer({ proposals }) {
                 Freelancer
               </span>
               <p className="text-white text-sm font-medium">
-                {proposal.freelancer_email}
+                {proposal.freelancerEmail}
               </p>
             </div>
 
@@ -85,7 +85,7 @@ export default function ProposalsContainer({ proposals }) {
                 Proposed Budget
               </span>
               <p className="text-green-400 font-semibold">
-                ${proposal.proposed_budget} USD
+                ${proposal.proposedBudget} USD
               </p>
             </div>
 
@@ -95,7 +95,7 @@ export default function ProposalsContainer({ proposals }) {
                 Completion Days
               </span>
               <p className="text-white text-sm">
-                {proposal.estimated_days} days
+                {proposal.estimatedDays} days
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function ProposalsContainer({ proposals }) {
               Message
             </span>
             <p className="text-zinc-400 text-sm leading-relaxed">
-              {proposal.cover_note}
+              {proposal.coverNote}
             </p>
           </div>
 

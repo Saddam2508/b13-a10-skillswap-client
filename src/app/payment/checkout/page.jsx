@@ -27,7 +27,7 @@ export default function CheckoutPage() {
     try {
       await completePaymentAction(taskId);
       setSuccess(true);
-      setTimeout(() => router.push("/dashboard"), 2000);
+      setTimeout(() => router.push("/dashboard/client"), 2000);
     } catch (err) {
       console.error(err);
     } finally {

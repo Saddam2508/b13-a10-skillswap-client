@@ -6,7 +6,7 @@ import {
 
 const STATUS = {
   open: { label: "Open", color: "success" },
-  "in-progress": { label: "In Progress", color: "primary" },
+  "in_progress": { label: "In Progress", color: "primary" },
   completed: { label: "Completed", color: "default" },
 };
 
@@ -23,7 +23,7 @@ const fmt = (d) =>
 export function TaskRow({ task, onEdit, onDelete }) {
   const st = STATUS[task.status] || STATUS.open;
   const canEdit = task.status === "open";
-  const canDelete = task.status !== "in-progress";
+  const canDelete = task.status !== "in_progress";
 
   return (
     <div className="group flex flex-col sm:flex-row sm:items-center gap-4 px-5 py-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-violet-500/20 transition-all duration-200">

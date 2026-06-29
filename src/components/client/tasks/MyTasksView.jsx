@@ -19,7 +19,7 @@ export default function MyTasksView({ initialTasks = [] }) {
   const counts = {
     all: tasks.length,
     open: tasks.filter((t) => t.status === "open").length,
-    "in-progress": tasks.filter((t) => t.status === "in-progress").length,
+    "in_progress": tasks.filter((t) => t.status === "in_progress").length,
     completed: tasks.filter((t) => t.status === "completed").length,
   };
 
@@ -81,7 +81,7 @@ export default function MyTasksView({ initialTasks = [] }) {
           {[
             { key: "all", label: "All" },
             { key: "open", label: "Open" },
-            { key: "in-progress", label: "In Progress" },
+            { key: "in_progress", label: "In Progress" },
             { key: "completed", label: "Completed" },
           ].map(({ key, label }) => (
             <button

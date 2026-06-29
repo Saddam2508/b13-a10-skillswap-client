@@ -12,6 +12,7 @@ export default async function ProposalsPage() {
   try {
     const result = await getProposalsByClientEmail(session.user.email);
     proposals = result?.data ?? [];
+    console.log(proposals)
   } catch (error) {
     console.error(error);
   }
