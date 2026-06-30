@@ -35,5 +35,5 @@ export const auth = betterAuth({
       },
     },
   },
-  plugins: [admin()],
+  // plugins: [admin()],
 });
