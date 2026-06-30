@@ -24,6 +24,7 @@ export default function SigninForm({ redirectTo = "/" }) {
   // UI states
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -60,6 +61,27 @@ export default function SigninForm({ redirectTo = "/" }) {
       setError("An unexpected network error occurred.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // ── Google Sign-in ───────────────────────────────────────────────────────────
+  const handleGoogleSignIn = async () => {
+    setError("");
+    setIsGoogleLoading(true);
+    try {
+      const { error: authError } = await signIn.social({
+        provider: "google",
+        callbackURL: redirectTo,
+      });
+
+      if (authError) {
+        setError(authError.message || "Google sign-in failed.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred during Google sign-in.");
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
@@ -161,9 +183,44 @@ export default function SigninForm({ redirectTo = "/" }) {
             Sign In
           </Button>
 
+          {/* Divider */}
+          <div className="flex items-center gap-3 my-1">
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+            <span className="text-xs text-zinc-500 dark:text-zinc-500">OR</span>
+            <div className="flex-1 h-px bg-zinc-200 dark:bg-zinc-800" />
+          </div>
+
+          {/* Google Sign-in */}
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={isGoogleLoading}
+            className="w-full flex items-center justify-center gap-2.5 rounded-xl h-12 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors text-sm font-medium text-zinc-700 dark:text-zinc-200 disabled:opacity-50 cursor-pointer"
+          >
+            <svg width="18" height="18" viewBox="0 0 48 48">
+              <path
+                fill="#EA4335"
+                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.61l6.85-6.85C35.98 2.69 30.4 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.2C12.43 13.09 17.72 9.5 24 9.5z"
+              />
+              <path
+                fill="#4285F4"
+                d="M46.1 24.5c0-1.64-.15-3.22-.42-4.75H24v9h12.4c-.54 2.9-2.17 5.36-4.62 7.02l7.2 5.6C43.91 37.1 46.1 31.4 46.1 24.5z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M10.54 28.43A14.5 14.5 0 019.5 24c0-1.52.26-2.99.72-4.43l-7.98-6.2A24 24 0 000 24c0 3.84.92 7.45 2.56 10.68l7.98-6.25z"
+              />
+              <path
+                fill="#34A853"
+                d="M24 48c6.48 0 11.93-2.14 15.91-5.8l-7.2-5.6c-2.01 1.35-4.6 2.1-8.71 2.1-6.28 0-11.57-3.59-13.46-8.93l-7.98 6.25C6.51 42.62 14.62 48 24 48z"
+              />
+            </svg>
+            {isGoogleLoading ? "Signing in..." : "Continue with Google"}
+          </button>
+
           {/* Footer */}
           <div className="text-center pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            New to HireLoop?{" "}
+            New to SkillSwap?{" "}
             <Link
               href={`/auth/signup?redirect=${encodeURIComponent(redirectTo)}`}
               className="font-medium text-blue-600 dark:text-blue-400"
