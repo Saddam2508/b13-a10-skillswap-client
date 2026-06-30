@@ -21,7 +21,7 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (data?.url) {
-        window.location.href = data.url; // Stripe Checkout page এ redirect
+        window.location.href = data.url; 
       } else {
         throw new Error("Failed to create checkout session.");
       }
